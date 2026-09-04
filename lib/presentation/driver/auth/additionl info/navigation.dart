@@ -2,18 +2,18 @@
 
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:movera_driver/constants/appcolors.dart';
-import 'package:movera_driver/constants/appfontweight.dart';
-import 'package:movera_driver/presentation/driver/auth/additionl%20info/screens/payout_details.dart';
-import 'package:movera_driver/presentation/driver/auth/additionl%20info/screens/personal_detail.dart';
-import 'package:movera_driver/presentation/driver/auth/additionl%20info/screens/upload_documents.dart';
-import 'package:movera_driver/presentation/driver/auth/additionl%20info/screens/vehicle_details.dart';
-import 'package:movera_driver/presentation/driver/home/home.dart';
-import 'package:movera_driver/widgets/custom_btn.dart';
-import 'package:movera_driver/widgets/custom_text_widget.dart';
-import 'package:movera_driver/widgets/navigation_transition.dart';
-import 'package:movera_driver/widgets/responsive_size.dart';
-import 'package:movera_driver/widgets/sizedbox_extention.dart';
+import 'package:riding_app/constants/appcolors.dart';
+import 'package:riding_app/constants/appfontweight.dart';
+import 'package:riding_app/presentation/driver/auth/additionl%20info/screens/payout_details.dart';
+import 'package:riding_app/presentation/driver/auth/additionl%20info/screens/personal_detail.dart';
+import 'package:riding_app/presentation/driver/auth/additionl%20info/screens/upload_documents.dart';
+import 'package:riding_app/presentation/driver/auth/additionl%20info/screens/vehicle_details.dart';
+import 'package:riding_app/presentation/driver/home/home.dart';
+import 'package:riding_app/widgets/custom_btn.dart';
+import 'package:riding_app/widgets/custom_text_widget.dart';
+import 'package:riding_app/widgets/navigation_transition.dart';
+import 'package:riding_app/widgets/responsive_size.dart';
+import 'package:riding_app/widgets/sizedbox_extention.dart';
 
 class DriverAdditionalInfoNavigationController extends GetxController {
   final RxInt currentPageIndex = 0.obs;

@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
-import 'package:movera_driver/constants/appcolors.dart';
-import 'package:movera_driver/constants/appfontweight.dart';
-import 'package:movera_driver/widgets/custom_text_widget.dart';
-import 'package:movera_driver/widgets/custom_textfield.dart';
-import 'package:movera_driver/widgets/dropdown.dart';
-import 'package:movera_driver/widgets/responsive_size.dart';
-import 'package:movera_driver/widgets/sizedbox_extention.dart';
+import 'package:riding_app/constants/appcolors.dart';
+import 'package:riding_app/constants/appfontweight.dart';
+import 'package:riding_app/widgets/custom_text_widget.dart';
+import 'package:riding_app/widgets/custom_textfield.dart';
+import 'package:riding_app/widgets/dropdown.dart';
+import 'package:riding_app/widgets/responsive_size.dart';
+import 'package:riding_app/widgets/sizedbox_extention.dart';
 
 // Personal Detail Screen Example
 class AdditionalInfoPayoutDetail extends StatelessWidget {

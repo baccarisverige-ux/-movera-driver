@@ -1,19 +1,19 @@
 // ignore_for_file: deprecated_member_use
 
 import 'package:flutter/material.dart';
-import 'package:movera_driver/constants/appassets.dart';
-import 'package:movera_driver/constants/appcolors.dart';
-import 'package:movera_driver/constants/appfontweight.dart';
-import 'package:movera_driver/presentation/driver/home/bottom%20sheets/accepted.dart';
-import 'package:movera_driver/presentation/driver/home/bottom%20sheets/arrived.dart';
-import 'package:movera_driver/presentation/driver/home/bottom%20sheets/in_ride.dart';
-import 'package:movera_driver/presentation/driver/home/bottom%20sheets/ride_request.dart';
-import 'package:movera_driver/presentation/driver/home/ride%20completed/ride_completed.dart';
-import 'package:movera_driver/presentation/driver/side%20menu/side_menu.dart';
-import 'package:movera_driver/widgets/custom_text_widget.dart';
-import 'package:movera_driver/widgets/navigation_transition.dart';
-import 'package:movera_driver/widgets/responsive_size.dart';
-import 'package:movera_driver/widgets/sizedbox_extention.dart';
+import 'package:riding_app/constants/appassets.dart';
+import 'package:riding_app/constants/appcolors.dart';
+import 'package:riding_app/constants/appfontweight.dart';
+import 'package:riding_app/presentation/driver/home/bottom%20sheets/accepted.dart';
+import 'package:riding_app/presentation/driver/home/bottom%20sheets/arrived.dart';
+import 'package:riding_app/presentation/driver/home/bottom%20sheets/in_ride.dart';
+import 'package:riding_app/presentation/driver/home/bottom%20sheets/ride_request.dart';
+import 'package:riding_app/presentation/driver/home/ride%20completed/ride_completed.dart';
+import 'package:riding_app/presentation/driver/side%20menu/side_menu.dart';
+import 'package:riding_app/widgets/custom_text_widget.dart';
+import 'package:riding_app/widgets/navigation_transition.dart';
+import 'package:riding_app/widgets/responsive_size.dart';
+import 'package:riding_app/widgets/sizedbox_extention.dart';
 
 class DriverHome extends StatefulWidget {
   const DriverHome({super.key});

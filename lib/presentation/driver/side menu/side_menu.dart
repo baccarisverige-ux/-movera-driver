@@ -1,17 +1,17 @@
 import 'package:flutter/material.dart';
-import 'package:movera_driver/constants/appassets.dart';
-import 'package:movera_driver/constants/appcolors.dart';
-import 'package:movera_driver/constants/appfontweight.dart';
-import 'package:movera_driver/presentation/common/help%20and%20support/help_and_support.dart';
-import 'package:movera_driver/presentation/common/trips/trips.dart';
-import 'package:movera_driver/presentation/driver/documents/document.dart';
-import 'package:movera_driver/presentation/driver/earnings/earnings.dart';
-import 'package:movera_driver/presentation/driver/profile/profile.dart';
-import 'package:movera_driver/presentation/driver/settings/settings.dart';
-import 'package:movera_driver/widgets/custom_text_widget.dart';
-import 'package:movera_driver/widgets/navigation_transition.dart';
-import 'package:movera_driver/widgets/responsive_size.dart';
-import 'package:movera_driver/widgets/sizedbox_extention.dart';
+import 'package:riding_app/constants/appassets.dart';
+import 'package:riding_app/constants/appcolors.dart';
+import 'package:riding_app/constants/appfontweight.dart';
+import 'package:riding_app/presentation/common/help%20and%20support/help_and_support.dart';
+import 'package:riding_app/presentation/common/trips/trips.dart';
+import 'package:riding_app/presentation/driver/documents/document.dart';
+import 'package:riding_app/presentation/driver/earnings/earnings.dart';
+import 'package:riding_app/presentation/driver/profile/profile.dart';
+import 'package:riding_app/presentation/driver/settings/settings.dart';
+import 'package:riding_app/widgets/custom_text_widget.dart';
+import 'package:riding_app/widgets/navigation_transition.dart';
+import 'package:riding_app/widgets/responsive_size.dart';
+import 'package:riding_app/widgets/sizedbox_extention.dart';
 
 class DriverSideMenu extends StatelessWidget {
   const DriverSideMenu({super.key});

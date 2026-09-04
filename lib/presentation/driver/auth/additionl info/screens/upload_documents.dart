@@ -1,13 +1,13 @@
 // ignore_for_file: deprecated_member_use
 
 import 'package:flutter/material.dart';
-import 'package:movera_driver/constants/appassets.dart';
-import 'package:movera_driver/constants/appcolors.dart';
-import 'package:movera_driver/constants/appfontweight.dart';
-import 'package:movera_driver/models/image_title.dart';
-import 'package:movera_driver/widgets/custom_text_widget.dart';
-import 'package:movera_driver/widgets/responsive_size.dart';
-import 'package:movera_driver/widgets/sizedbox_extention.dart';
+import 'package:riding_app/constants/appassets.dart';
+import 'package:riding_app/constants/appcolors.dart';
+import 'package:riding_app/constants/appfontweight.dart';
+import 'package:riding_app/models/image_title.dart';
+import 'package:riding_app/widgets/custom_text_widget.dart';
+import 'package:riding_app/widgets/responsive_size.dart';
+import 'package:riding_app/widgets/sizedbox_extention.dart';
 
 class AdditionalInfoUploadDocument extends StatefulWidget {
   const AdditionalInfoUploadDocument({super.key});

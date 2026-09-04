@@ -1,19 +1,21 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:movera_driver/constants/appassets.dart';
-import 'package:movera_driver/constants/appcolors.dart';
-import 'package:movera_driver/constants/appfontweight.dart';
-import 'package:movera_driver/models/onboarding.dart';
-import 'package:movera_driver/presentation/driver/auth/login/login.dart';
-import 'package:movera_driver/widgets/custom_btn.dart';
-import 'package:movera_driver/widgets/custom_text_widget.dart';
-import 'package:movera_driver/widgets/navigation_transition.dart';
-import 'package:movera_driver/widgets/responsive_size.dart';
-import 'package:movera_driver/widgets/sizedbox_extention.dart';
+import 'package:riding_app/constants/appassets.dart';
+import 'package:riding_app/constants/appcolors.dart';
+import 'package:riding_app/constants/appfontweight.dart';
+import 'package:riding_app/models/onboarding.dart';
+import 'package:riding_app/presentation/driver/auth/login/login.dart';
+import 'package:riding_app/presentation/passenger/auth/login/login.dart';
+import 'package:riding_app/widgets/custom_btn.dart';
+import 'package:riding_app/widgets/custom_text_widget.dart';
+import 'package:riding_app/widgets/navigation_transition.dart';
+import 'package:riding_app/widgets/responsive_size.dart';
+import 'package:riding_app/widgets/sizedbox_extention.dart';
 import 'package:smooth_page_indicator/smooth_page_indicator.dart';
 
 class OnboardingScreen extends StatefulWidget {
-  const OnboardingScreen({super.key});
+  final bool isDriver;
+  const OnboardingScreen({super.key, required this.isDriver});
 
   @override
   State<OnboardingScreen> createState() => _OnboardingScreenState();
@@ -162,10 +164,17 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
                               child: CustomButton(
                                 centerContent: "Skip",
                                 onPressed: () {
-                                  Navigator.pushReplacement(
-                                    context,
-                                    BottomToTopTransition(DriverLogin()),
-                                  );
+                                  widget.isDriver
+                                      ? Navigator.pushReplacement(
+                                          context,
+                                          BottomToTopTransition(DriverLogin()),
+                                        )
+                                      : Navigator.pushReplacement(
+                                          context,
+                                          BottomToTopTransition(
+                                            PassengerLogin(),
+                                          ),
+                                        );
                                 },
                                 borderRadius: 50,
                                 borderColor: AppColor.primary,
@@ -305,10 +314,15 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
                       centerContent: "Next",
                       onPressed: currentPageIndex == 2
                           ? () {
-                              Navigator.pushReplacement(
-                                context,
-                                BottomToTopTransition(DriverLogin()),
-                              );
+                              widget.isDriver
+                                  ? Navigator.pushReplacement(
+                                      context,
+                                      BottomToTopTransition(DriverLogin()),
+                                    )
+                                  : Navigator.pushReplacement(
+                                      context,
+                                      BottomToTopTransition(PassengerLogin()),
+                                    );
                             }
                           : () {
                               controller.animateToPage(
