@@ -1,0 +1,110 @@
+name: Import Exact Driver Files
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - 'D1.zip'
+      - 'D2.zip'
+      - 'driver-upload-3.zip'
+      - 'driver-upload-4.zip'
+      - '.github/workflows/import-exact-driver.yml'
+
+permissions:
+  contents: write
+  pages: write
+  id-token: write
+
+concurrency:
+  group: exact-driver-import
+  cancel-in-progress: false
+
+jobs:
+  import-build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Verify uploaded Driver ZIP wrappers
+        run: |
+          echo "4116b49c81ee398f8276d6f69e3cae07377ce35ff3316e88eb6387ae40b95e05  D1.zip" | sha256sum -c -
+          echo "ab618a6c87c0816e2e297e565982e978944c49eedcf8c4d3585e4ea3497fc303  D2.zip" | sha256sum -c -
+          echo "fc8bc702fd987ca4b073afd52570a887f8db348c67e2d611a8107cd04166fa0a  driver-upload-3.zip" | sha256sum -c -
+          echo "6ccfcb7182ac4f010a97c2e28afc6b14400991722e4ab6f649012e162963c4ec  driver-upload-4.zip" | sha256sum -c -
+
+      - name: Reconstruct exact Driver archive
+        run: |
+          unzip -p D1.zip driver_exact_full.part00 > /tmp/driver.part00
+          unzip -p D2.zip driver_exact_full.part01 > /tmp/driver.part01
+          unzip -p driver-upload-3.zip driver_exact_full.part02 > /tmp/driver.part02
+          unzip -p driver-upload-4.zip driver_exact_full.part03 > /tmp/driver.part03
+          echo "ca6e6398309d38315249ce88ee5dde600fc29fe598ae8237864091f0b2471615  /tmp/driver.part00" | sha256sum -c -
+          echo "611a2c33fec0da355cbf8e511dfbcdb892196b8a5c40e8a8fa4e595cda0b76ab  /tmp/driver.part01" | sha256sum -c -
+          echo "c8af8c2dee4b47aab71c33e8577c9f4c207e14ee295b018ee7df1d67998162b1  /tmp/driver.part02" | sha256sum -c -
+          echo "c19cefe590b7a577a17581313b2956f1562ad11c49329a07798c2a0fbe3cde13  /tmp/driver.part03" | sha256sum -c -
+          cat /tmp/driver.part00 /tmp/driver.part01 /tmp/driver.part02 /tmp/driver.part03 > /tmp/riding_app_driver_exact.zip
+          echo "78d2ce6796121d1b7db2c890aef5af83f4ae3bf96edfb9e03f6c91a5ac098c58  /tmp/riding_app_driver_exact.zip" | sha256sum -c -
+          unzip -t /tmp/riding_app_driver_exact.zip >/dev/null
+
+      - name: Replace repository with exact 689-file Driver tree
+        run: |
+          rm -rf /tmp/driver-exact
+          mkdir -p /tmp/driver-exact
+          unzip -q /tmp/riding_app_driver_exact.zip -d /tmp/driver-exact
+          test -d /tmp/driver-exact/riding_app
+          find . -mindepth 1 -maxdepth 1 ! -name .git -exec rm -rf {} +
+          cp -a /tmp/driver-exact/riding_app/. .
+          git config core.autocrlf false
+          git add -Af .
+          FILE_COUNT="$(git ls-files | wc -l)"
+          ACTUAL_TREE="$(git write-tree)"
+          echo "Driver file count: $FILE_COUNT"
+          echo "Driver tree: $ACTUAL_TREE"
+          test "$FILE_COUNT" = "689"
+          test "$ACTUAL_TREE" = "ffda0f752c2f73089e6b6a87b1c2b1c1c9fcc427"
+
+      - name: Commit exact Driver source
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git config http.postBuffer 524288000
+          git commit -m "Import exact Driver files from original riding_app.zip"
+          git push origin main
+
+      - uses: subosito/flutter-action@v2
+        with:
+          channel: stable
+          cache: true
+
+      - name: Prepare temporary Web build only
+        run: |
+          rm -rf .dart_tool build android/.gradle
+          python3 - <<'PY'
+          from pathlib import Path
+          p = Path('lib/widgets/responsive_size.dart')
+          b = p.read_bytes()
+          old = b'double screenHorizPadding = ScreenUtil().setWidth(16);'
+          new = b'double get screenHorizPadding => ScreenUtil().setWidth(16);'
+          if old in b:
+              p.write_bytes(b.replace(old, new, 1))
+          PY
+
+      - run: flutter pub get
+      - run: flutter build web --release --base-href "/-movera-driver/"
+      - uses: actions/configure-pages@v5
+      - uses: actions/upload-pages-artifact@v3
+        with:
+          path: build/web
+
+  deploy:
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    runs-on: ubuntu-latest
+    needs: import-build
+    steps:
+      - name: Deploy exact Driver
+        id: deployment
+        uses: actions/deploy-pages@v4
