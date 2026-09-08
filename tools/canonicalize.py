@@ -19,7 +19,7 @@ def move(src: str, dst: str) -> None:
     shutil.move(str(source), str(target))
 
 
-# Feature-first architecture while preserving Driver screens and assets.
+# Feature-first architecture while preserving Driver screens and original assets.
 move("lib/constants", "lib/core/constants")
 move("lib/services", "lib/core/services")
 move("lib/models", "lib/shared/models")
@@ -76,7 +76,24 @@ pubspec.write_text(text)
 
 gradle = Path("android/app/build.gradle.kts")
 if gradle.exists():
-    gradle.write_text(gradle.read_text().replace("com.example.movera", BUNDLE))
+    gradle_text = gradle.read_text().replace("com.example.movera", BUNDLE)
+    if "val mapsApiKey =" not in gradle_text:
+        gradle_text = gradle_text.replace(
+            "\nandroid {\n",
+            "\nval mapsApiKey = (project.findProperty(\"MAPS_API_KEY\") as String?)\n"
+            "    ?: System.getenv(\"MAPS_API_KEY\")\n"
+            "    ?: \"MISSING_MAPS_API_KEY\"\n\n"
+            "android {\n",
+            1,
+        )
+    if 'manifestPlaceholders["MAPS_API_KEY"]' not in gradle_text:
+        gradle_text = gradle_text.replace(
+            "        versionName = flutter.versionName\n",
+            "        versionName = flutter.versionName\n"
+            "        manifestPlaceholders[\"MAPS_API_KEY\"] = mapsApiKey\n",
+            1,
+        )
+    gradle.write_text(gradle_text)
 
 activities = [p for p in Path("android/app/src/main").rglob("MainActivity.kt") if p.is_file()]
 if activities:
@@ -100,17 +117,47 @@ if pbx.exists():
 
 manifest = Path("android/app/src/main/AndroidManifest.xml")
 if manifest.exists():
+    content = manifest.read_text()
     content = re.sub(
         r'android:label="[^"]*"',
         'android:label="Movera Driver"',
-        manifest.read_text(),
+        content,
+        count=1,
+    )
+    content = re.sub(
+        r'(<meta-data\s+android:name="com\.google\.android\.geo\.API_KEY"\s+android:value=")[^"]*("/>)',
+        r'\1${MAPS_API_KEY}\2',
+        content,
         count=1,
     )
     manifest.write_text(content)
 
+# Never keep a Maps credential in the public iOS source tree.
+app_delegate = Path("ios/Runner/AppDelegate.swift")
+if app_delegate.exists():
+    content = app_delegate.read_text()
+    content = re.sub(
+        r'\s*GMSServices\.provideAPIKey\("[^"]*"\)',
+        '\n    if let mapsAPIKey = Bundle.main.object(forInfoDictionaryKey: "GOOGLE_MAPS_API_KEY") as? String,\n'
+        '       !mapsAPIKey.isEmpty,\n'
+        '       !mapsAPIKey.hasPrefix("$(") {\n'
+        '      GMSServices.provideAPIKey(mapsAPIKey)\n'
+        '    }',
+        content,
+        count=1,
+    )
+    app_delegate.write_text(content)
+
 info = Path("ios/Runner/Info.plist")
 if info.exists():
-    info.write_text(info.read_text().replace("<string>movera</string>", "<string>Movera Driver</string>"))
+    info_text = info.read_text().replace("<string>movera</string>", "<string>Movera Driver</string>")
+    if "<key>GOOGLE_MAPS_API_KEY</key>" not in info_text:
+        info_text = info_text.replace(
+            "</dict>",
+            "\t<key>GOOGLE_MAPS_API_KEY</key>\n\t<string>$(GOOGLE_MAPS_API_KEY)</string>\n</dict>",
+            1,
+        )
+    info.write_text(info_text)
 
 web = Path("web/index.html")
 if web.exists():
@@ -121,13 +168,9 @@ for zip_file in ROOT.glob("driver-part-*.zip"):
     if zip_file.is_file():
         zip_file.unlink()
 
-for workflow in [
-    ".github/workflows/extract-uploaded-parts.yml",
-    ".github/workflows/architecture-audit.yml",
-    ".github/workflows/canonicalize-architecture.yml",
-    ".github/workflows/debug-analysis.yml",
-]:
-    Path(workflow).unlink(missing_ok=True)
+# Workflow files are intentionally left untouched here. GitHub Actions' token
+# cannot modify workflow files; they are cleaned directly after this validated
+# source-tree commit is pushed.
 
 # Replace the stale Flutter counter template test with a Movera smoke test.
 Path("test").mkdir(exist_ok=True)
@@ -161,6 +204,10 @@ This repository is the canonical source of truth for the **Movera Driver** Flutt
 
 Rider application code belongs only in the separate Movera Rider repository.
 Generated Flutter/Gradle files, temporary upload ZIPs, and build output are intentionally not source-controlled.
+
+## Google Maps configuration
+
+Never commit Maps API keys. Android reads `MAPS_API_KEY` from a Gradle property or environment variable. iOS reads `GOOGLE_MAPS_API_KEY` from the Xcode build setting exposed through `Info.plist`.
 """
 )
 
@@ -173,6 +220,7 @@ build/
 .flutter-plugins
 .flutter-plugins-dependencies
 **/doc/api/
+analysis.log
 
 # Android generated/local
 android/.gradle/
@@ -200,33 +248,6 @@ windows/flutter/generated_plugins.cmake
 *.iml
 .DS_Store
 .vscode/
-"""
-)
-
-Path(".github/workflows").mkdir(parents=True, exist_ok=True)
-Path(".github/workflows/ci.yml").write_text(
-    """name: Movera Driver CI
-on:
-  push:
-    branches: [main]
-  pull_request:
-    branches: [main]
-permissions:
-  contents: read
-jobs:
-  validate:
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v4
-      - uses: subosito/flutter-action@v2
-        with:
-          channel: stable
-          cache: true
-      - run: flutter pub get
-      - run: flutter analyze --no-fatal-infos --no-fatal-warnings
-      - run: flutter test
-      - run: flutter build web --release
-      - run: flutter build apk --debug
 """
 )
 
