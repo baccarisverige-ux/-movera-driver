@@ -33,6 +33,24 @@ if 'static const Color yellow' not in text:
     text = text[:idx] + "  static const Color yellow = Color(0xFFFAC22F);\n" + text[idx:]
     colors.write_text(text)
 
+# Bring the shared location service onto the current geolocator/geocoding APIs
+# while preserving its behavior.
+location = Path('lib/core/services/location_services.dart')
+text = location.read_text()
+text = text.replace(
+    "Position position = await Geolocator.getCurrentPosition(\n        desiredAccuracy: LocationAccuracy.high,\n      );",
+    "Position position = await Geolocator.getCurrentPosition(\n        locationSettings: const LocationSettings(\n          accuracy: LocationAccuracy.high,\n        ),\n      );",
+)
+text = text.replace(
+    "List<Placemark> placemarks = await placemarkFromCoordinates(\n        latitude,\n        longitude,\n      );",
+    "final geocoding = Geocoding();\n      List<Placemark> placemarks = await geocoding.placemarkFromCoordinates(\n        latitude,\n        longitude,\n      );",
+)
+text = text.replace(
+    "static Future<void> openAppSettings() async {\n    await openAppSettings();\n  }",
+    "static Future<void> openAppSettings() async {\n    await Geolocator.openAppSettings();\n  }",
+)
+location.write_text(text)
+
 Path('test/widget_test.dart').write_text("""import 'package:flutter_test/flutter_test.dart';
 import 'package:movera_driver/main.dart';
 
