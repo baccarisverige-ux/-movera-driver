@@ -31,7 +31,22 @@ jobs:
       - name: Resolve dependencies
         run: flutter pub get
       - name: Static analysis
-        run: flutter analyze --no-fatal-infos --no-fatal-warnings
+        id: analyze
+        continue-on-error: true
+        shell: bash
+        run: |
+          set -o pipefail
+          flutter analyze --no-fatal-infos --no-fatal-warnings 2>&1 | tee analysis.log
+      - name: Upload analyzer diagnostics
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: driver-canonical-analysis
+          path: analysis.log
+          retention-days: 1
+      - name: Stop on analyzer errors
+        if: steps.analyze.outcome == 'failure'
+        run: exit 1
       - name: Tests
         run: flutter test
       - name: Build web release
@@ -40,7 +55,7 @@ jobs:
         run: flutter build apk --debug
       - name: Commit validated canonical architecture
         run: |
-          git config user.name "github-actions[bot]"
+          git config user.name "github-actions[bot]]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
           git add -A
           git commit -m "Canonicalize Movera Driver architecture"
