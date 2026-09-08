@@ -7,6 +7,7 @@ on:
     paths:
       - tools/canonicalize.py
       - tools/normalize_legacy_imports.py
+      - tools/fix_build_blockers.py
       - .github/workflows/canonicalize-architecture.yml
 
 permissions:
@@ -24,10 +25,14 @@ jobs:
         run: python3 tools/canonicalize.py
       - name: Normalize legacy package imports
         run: python3 tools/normalize_legacy_imports.py
+      - name: Wire existing Driver assets and status color
+        run: python3 tools/fix_build_blockers.py
       - uses: subosito/flutter-action@v2
         with:
           channel: stable
           cache: true
+      - name: Add missing runtime dependencies
+        run: flutter pub add geolocator geocoding syncfusion_flutter_charts
       - name: Resolve dependencies
         run: flutter pub get
       - name: Static analysis
@@ -55,7 +60,7 @@ jobs:
         run: flutter build apk --debug
       - name: Commit validated canonical architecture
         run: |
-          git config user.name "github-actions[bot]]"
+          git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
           git add -A
           git commit -m "Canonicalize Movera Driver architecture"
