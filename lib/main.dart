@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
-import 'package:movera/constants/appcolors.dart';
-import 'package:movera/presentation/common/splash/splash.dart';
+import 'package:movera_driver/core/constants/appcolors.dart';
+import 'package:movera_driver/shared/presentation/splash/splash.dart';
 
 void main() {
   runApp(const MoveraApp());
