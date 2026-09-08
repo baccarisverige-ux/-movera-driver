@@ -6,6 +6,7 @@ on:
       - canonical-architecture-2026
     paths:
       - tools/canonicalize.py
+      - tools/normalize_legacy_imports.py
       - .github/workflows/canonicalize-architecture.yml
 
 permissions:
@@ -21,6 +22,8 @@ jobs:
           fetch-depth: 0
       - name: Apply architecture migration
         run: python3 tools/canonicalize.py
+      - name: Normalize legacy package imports
+        run: python3 tools/normalize_legacy_imports.py
       - uses: subosito/flutter-action@v2
         with:
           channel: stable
