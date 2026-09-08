@@ -1,12 +1,18 @@
 // ignore_for_file: deprecated_member_use
 
 import 'package:flutter/material.dart';
-import 'package:riding_app/constants/appassets.dart';
-import 'package:riding_app/constants/appcolors.dart';
-import 'package:riding_app/constants/appfontweight.dart';
-import 'package:riding_app/widgets/custom_text_widget.dart';
-import 'package:riding_app/widgets/responsive_size.dart';
-import 'package:riding_app/widgets/sizedbox_extention.dart';
+import 'package:movera/constants/appassets.dart';
+import 'package:movera/constants/appcolors.dart';
+import 'package:movera/constants/appfontweight.dart';
+import 'package:movera/presentation/driver/analytics/analytics.dart';
+import 'package:movera/presentation/driver/documents/documents.dart';
+import 'package:movera/presentation/driver/my%20wallet/wallet.dart';
+import 'package:movera/presentation/driver/settings/settings.dart';
+import 'package:movera/presentation/driver/vehicles/vehicles.dart';
+import 'package:movera/widgets/custom_text_widget.dart';
+import 'package:movera/widgets/navigation_transition.dart';
+import 'package:movera/widgets/responsive_size.dart';
+import 'package:movera/widgets/sizedbox_extention.dart';
 
 class DriverProfile extends StatelessWidget {
   const DriverProfile({super.key});
@@ -14,259 +20,269 @@ class DriverProfile extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: SingleChildScrollView(
-        child: Column(
-          children: [
-            55.height,
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                IconButton(
-                  onPressed: () {
-                    Navigator.pop(context);
-                  },
-                  icon: Icon(
-                    Icons.arrow_back_rounded,
-                    size: ResSize.h * 20,
-                    color: AppColor.primary,
-                  ),
-                ),
-                TextWidget(
-                  text: "Profile",
-                  color: AppColor.primary,
-                  fontSize: 18,
-                  fontWeight: fwSemiBold,
-                ),
-                IconButton(
-                  onPressed: () {},
-                  splashColor: Colors.transparent,
-                  highlightColor: Colors.transparent,
-                  icon: SizedBox(),
-                ),
-              ],
-            ),
-            Padding(
-              padding: EdgeInsets.symmetric(horizontal: screenHorizPadding),
-              child: Column(
+      backgroundColor: Colors.white,
+      body: SafeArea(
+        child: SingleChildScrollView(
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: [
+              8.height,
+              Row(
                 children: [
-                  24.height,
-                  Center(
-                    child: Container(
-                      height: ResSize.h * 100,
-                      width: ResSize.w * 100,
-                      decoration: BoxDecoration(
-                        shape: BoxShape.circle,
-                        image: DecorationImage(
-                          image: AssetImage(AppAssets.profile),
-                          fit: BoxFit.cover,
-                        ),
-                      ),
-                    ),
-                  ),
-                  4.height,
+                  IconButton(
+                    onPressed: () => Navigator.of(context).maybePop(),
 
-                  Center(
-                    child: TextWidget(
-                      text: "Mac Mort",
-                      color: AppColor.primary,
-                      fontSize: 18,
-                      fontWeight: fwSemiBold,
+                    icon: Icon(
+                      Icons.arrow_back_ios_new_rounded,
+                      color: AppColor.title,
+                      size: 20 * ResSize.h,
                     ),
                   ),
-                  2.height,
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      TextWidget(
-                        text: "Rating:",
-                        color: AppColor.subtitle,
-                        fontSize: 14,
-                        fontWeight: fwNormal,
-                      ),
-                      4.width,
-                      Icon(
-                        Icons.star_rounded,
-                        size: ResSize.h * 16,
-                        color: AppColor.yellow,
-                      ),
-                      2.width,
-                      TextWidget(
-                        text: "4.8",
-                        color: AppColor.subtitle,
-                        fontSize: 14,
-                        fontWeight: fwNormal,
-                      ),
-                    ],
-                  ),
-                  30.height,
-                  Container(
-                    padding: EdgeInsets.symmetric(
-                      horizontal: ResSize.w * 16,
-                      vertical: ResSize.h * 10,
-                    ),
-                    decoration: BoxDecoration(
-                      color: AppColor.secondary,
-                      borderRadius: BorderRadius.circular(12),
-                      boxShadow: [
-                        BoxShadow(
-                          offset: const Offset(0, 5),
-                          color: Color(0xff000000).withOpacity(0.08),
-                          blurRadius: 20,
-                          spreadRadius: 0,
-                        ),
-                      ],
-                    ),
-                    child: Row(
-                      children: [
-                        Expanded(
-                          child: Column(
-                            children: [
-                              Row(
-                                children: [
-                                  Container(
-                                    height: ResSize.h * 40,
-                                    width: ResSize.w * 40,
-                                    decoration: BoxDecoration(
-                                      shape: BoxShape.circle,
-                                      color: Color(0xffF6F6F6),
-                                    ),
-                                    child: Center(
-                                      child: Image.asset(
-                                        AppAssets.trip,
-                                        height: ResSize.h * 20,
-                                      ),
-                                    ),
-                                  ),
-                                  8.width,
-                                  TextWidget(
-                                    text: "400 Trips",
-                                    color: AppColor.primary,
-                                    fontSize: 18,
-                                    fontWeight: fwSemiBold,
-                                  ),
-                                ],
-                              ),
-                            ],
-                          ),
-                        ),
-                        SizedBox(
-                          height: ResSize.h * 45,
-                          child: VerticalDivider(
-                            color: AppColor.border,
-                            thickness: 1,
-                          ),
-                        ),
-                        Expanded(
-                          child: Column(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            children: [
-                              TextWidget(
-                                text: "Member since 2020",
-                                color: Color(0xff1E1E1E),
-                                fontSize: 14,
-                                fontWeight: fwMedium,
-                              ),
-                            ],
-                          ),
-                        ),
-                      ],
-                    ),
-                  ),
-                  24.height,
-                  Container(
-                    padding: EdgeInsets.all(ResSize.w * 16),
-                    decoration: BoxDecoration(
-                      color: AppColor.secondary,
-                      borderRadius: BorderRadius.circular(12),
-                      boxShadow: [
-                        BoxShadow(
-                          offset: const Offset(0, 5),
-                          color: Color(0xff000000).withOpacity(0.08),
-                          blurRadius: 20,
-                          spreadRadius: 0,
-                        ),
-                      ],
-                    ),
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        TextWidget(
-                          text: "Personal Info",
-                          color: AppColor.primary,
-                          fontSize: 18,
-                          fontWeight: fwSemiBold,
-                        ),
-                        12.height,
-                        _buildRow("Name", "Mac mort"),
-                        14.height,
-                        _buildRow("Phone", "+92 322122322"),
-                        14.height,
-                        _buildRow("Email", "example23@gmail.com"),
-                      ],
-                    ),
-                  ),
-                  24.height,
-                  Container(
-                    padding: EdgeInsets.all(ResSize.w * 16),
-                    decoration: BoxDecoration(
-                      color: AppColor.secondary,
-                      borderRadius: BorderRadius.circular(12),
-                      boxShadow: [
-                        BoxShadow(
-                          offset: const Offset(0, 5),
-                          color: Color(0xff000000).withOpacity(0.08),
-                          blurRadius: 20,
-                          spreadRadius: 0,
-                        ),
-                      ],
-                    ),
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        TextWidget(
-                          text: "Vehicle Detail",
-                          color: AppColor.primary,
-                          fontSize: 18,
-                          fontWeight: fwSemiBold,
-                        ),
-                        12.height,
-                        _buildRow("Car", "Toyota Corolla"),
-                        14.height,
-                        _buildRow("Color", "Black"),
-                        14.height,
-                        _buildRow("Plate Number", "ABC 123"),
-                        14.height,
-                        _buildRow("Ride Category", "Standard"),
-                      ],
+                  const Spacer(),
+                  IconButton(
+                    onPressed: () {
+                      Navigator.push(
+                        context,
+                        RightToLeftTransition(Settings()),
+                      );
+                    },
+                    icon: Image.asset(
+                      AppAssets.setting,
+                      height: ResSize.h * 20,
                     ),
                   ),
                 ],
               ),
+              Stack(
+                alignment: Alignment.bottomRight,
+                children: [
+                  CircleAvatar(
+                    radius: 64 * ResSize.h,
+                    backgroundImage: const AssetImage(AppAssets.profileImg),
+                    backgroundColor: const Color(0xFFECECEC),
+                  ),
+                  Container(
+                    height: ResSize.h * 36,
+                    width: ResSize.w * 36,
+                    decoration: BoxDecoration(
+                      color: AppColor.title,
+                      borderRadius: BorderRadius.circular(20 * ResSize.w),
+                      border: Border.all(color: Colors.white, width: 1),
+                    ),
+                    child: Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: Image.asset(AppAssets.camera),
+                    ),
+                  ),
+                ],
+              ),
+              18.height,
+              TextWidget(
+                text: 'Andrew Johns',
+                fontSize: 18,
+                color: AppColor.title,
+                fontWeight: fwBold,
+              ),
+              TextWidget(
+                text: 'Joined since 2024',
+                fontSize: 14,
+                color: AppColor.subtitle,
+                fontWeight: fwNormal,
+              ),
+              30.height,
+              Padding(
+                padding: EdgeInsets.symmetric(horizontal: screenHorizPadding),
+                child: InkWell(
+                  onTap: () {
+                    Navigator.push(
+                      context,
+                      RightToLeftTransition(DriverVehicles()),
+                    );
+                  },
+
+                  child: _vehiclesCard(),
+                ),
+              ),
+              18.height,
+              _menuItem(
+                icon: AppAssets.analytics,
+                title: 'Analytics',
+                onTap: () {
+                  Navigator.push(context, RightToLeftTransition(Analytics()));
+                },
+              ),
+              _menuItem(
+                icon: AppAssets.myBank,
+                title: 'My bank',
+                onTap: () {
+                  Navigator.push(
+                    context,
+                    RightToLeftTransition(WalletScreen()),
+                  );
+                },
+              ),
+              _menuItem(
+                icon: AppAssets.document,
+                title: 'Documents',
+                onTap: () {
+                  Navigator.push(
+                    context,
+                    RightToLeftTransition(DriverDocuments()),
+                  );
+                },
+              ),
+              _menuItem(
+                icon: AppAssets.privacyPolicy,
+                title: 'Privacy policy',
+                onTap: () {},
+              ),
+              _menuItem(
+                icon: AppAssets.privacyPolicy,
+                title: 'Terms of service',
+                onTap: () {},
+              ),
+              _menuItem(
+                icon: AppAssets.helpCenter,
+                title: 'Help center',
+                onTap: () {},
+              ),
+              _logoutItem(),
+              24.height,
+            ],
+          ),
+        ),
+      ),
+    );
+  }
+
+  Widget _vehiclesCard() {
+    return Container(
+      width: double.infinity,
+      padding: EdgeInsets.symmetric(vertical: ResSize.h * 16),
+      decoration: BoxDecoration(
+        color: const Color(0xFFF1F4F9),
+        borderRadius: BorderRadius.circular(8),
+      ),
+      child: Row(
+        children: [
+          Transform.scale(
+            scale: 1.1,
+            child: Image.asset(AppAssets.profileCar, width: ResSize.w * 75),
+          ),
+          12.width,
+          Expanded(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                TextWidget(
+                  text: 'Vehicles',
+                  fontSize: 18,
+                  color: AppColor.title,
+                  fontWeight: fwMedium,
+                ),
+                1.height,
+                Row(
+                  children: [
+                    TextWidget(
+                      text: 'Mercedes-Benz C200',
+                      fontSize: 14,
+                      color: AppColor.title,
+                      fontWeight: fwMedium,
+                    ),
+                    20.width,
+                    Icon(
+                      Icons.arrow_forward_ios_rounded,
+                      color: AppColor.title,
+                      size: ResSize.h * 18,
+                    ),
+                  ],
+                ),
+              ],
             ),
-            40.height,
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget _menuItem({
+    required String icon,
+    required String title,
+    required VoidCallback onTap,
+    double iconScaleSize = 1,
+  }) {
+    return InkWell(
+      onTap: onTap,
+      splashColor: AppColor.primary.withOpacity(0.1),
+      highlightColor: AppColor.primary.withOpacity(0.1),
+      child: Container(
+        padding: EdgeInsets.symmetric(
+          vertical: 12 * ResSize.h,
+          horizontal: screenHorizPadding,
+        ),
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            Row(
+              children: [
+                Transform.scale(
+                  scale: iconScaleSize,
+                  child: Image.asset(
+                    icon,
+                    height: ResSize.h * 20,
+                    color: AppColor.title,
+                  ),
+                ),
+                16.width,
+                TextWidget(
+                  text: title,
+                  color: AppColor.title,
+                  fontSize: 18,
+                  fontWeight: fwMedium,
+                ),
+              ],
+            ),
+            Icon(
+              Icons.arrow_forward_ios_rounded,
+              color: AppColor.subtitle,
+              size: ResSize.h * 18,
+            ),
           ],
         ),
       ),
     );
   }
 
-  Widget _buildRow(String label, String amount) {
-    return Row(
-      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-      children: [
-        TextWidget(
-          text: label,
-          fontSize: 14,
-          fontWeight: fwNormal,
-          color: AppColor.subtitle,
+  Widget _logoutItem() {
+    return InkWell(
+      onTap: () {},
+      splashColor: AppColor.red.withOpacity(0.1),
+      highlightColor: AppColor.red.withOpacity(0.1),
+      child: Container(
+        padding: EdgeInsets.symmetric(
+          vertical: 12 * ResSize.h,
+          horizontal: screenHorizPadding,
         ),
-        TextWidget(
-          text: amount,
-          fontSize: 14,
-          fontWeight: fwMedium,
-          color: AppColor.primary,
+        child: Row(
+          children: [
+            Transform.scale(
+              scale: 1,
+              child: Image.asset(
+                AppAssets.logout,
+                height: ResSize.h * 24,
+                color: AppColor.red,
+              ),
+            ),
+            16.width,
+            TextWidget(
+              text: 'Log out',
+              fontSize: 18,
+              color: AppColor.red,
+              fontWeight: fwMedium,
+            ),
+          ],
         ),
-      ],
+      ),
     );
   }
 }

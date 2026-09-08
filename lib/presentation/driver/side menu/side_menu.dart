@@ -1,17 +1,14 @@
 import 'package:flutter/material.dart';
-import 'package:riding_app/constants/appassets.dart';
-import 'package:riding_app/constants/appcolors.dart';
-import 'package:riding_app/constants/appfontweight.dart';
-import 'package:riding_app/presentation/common/help%20and%20support/help_and_support.dart';
-import 'package:riding_app/presentation/common/trips/trips.dart';
-import 'package:riding_app/presentation/driver/documents/document.dart';
-import 'package:riding_app/presentation/driver/earnings/earnings.dart';
-import 'package:riding_app/presentation/driver/profile/profile.dart';
-import 'package:riding_app/presentation/driver/settings/settings.dart';
-import 'package:riding_app/widgets/custom_text_widget.dart';
-import 'package:riding_app/widgets/navigation_transition.dart';
-import 'package:riding_app/widgets/responsive_size.dart';
-import 'package:riding_app/widgets/sizedbox_extention.dart';
+import 'package:movera/constants/appassets.dart';
+import 'package:movera/constants/appcolors.dart';
+import 'package:movera/constants/appfontweight.dart';
+import 'package:movera/presentation/driver/preferences/preferences.dart';
+import 'package:movera/presentation/driver/profile/profile.dart';
+import 'package:movera/presentation/driver/ride%20history/ride_history.dart';
+import 'package:movera/widgets/custom_text_widget.dart';
+import 'package:movera/widgets/navigation_transition.dart';
+import 'package:movera/widgets/responsive_size.dart';
+import 'package:movera/widgets/sizedbox_extention.dart';
 
 class DriverSideMenu extends StatelessWidget {
   const DriverSideMenu({super.key});
@@ -20,12 +17,12 @@ class DriverSideMenu extends StatelessWidget {
   Widget build(BuildContext context) {
     return Drawer(
       clipBehavior: Clip.none,
-      backgroundColor: AppColor.secondary,
+      backgroundColor: AppColor.white,
       elevation: 0,
       surfaceTintColor: Colors.transparent,
       width: MediaQuery.of(context).size.width * 0.78,
       child: Container(
-        decoration: BoxDecoration(color: AppColor.secondary),
+        decoration: BoxDecoration(color: AppColor.white),
         child: SafeArea(
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
@@ -45,6 +42,7 @@ class DriverSideMenu extends StatelessWidget {
                         );
                       },
                       child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
                           Row(
                             children: [
@@ -54,19 +52,24 @@ class DriverSideMenu extends StatelessWidget {
                                 decoration: BoxDecoration(
                                   shape: BoxShape.circle,
                                   image: DecorationImage(
-                                    image: AssetImage(AppAssets.profile),
+                                    image: AssetImage(AppAssets.profileImg),
                                     fit: BoxFit.cover,
                                   ),
                                 ),
                               ),
                               12.width,
                               TextWidget(
-                                text: "Morgan Mill",
-                                color: AppColor.primary,
+                                text: "Marta Parker",
+                                color: AppColor.black,
                                 fontSize: 16,
                                 fontWeight: fwMedium,
                               ),
                             ],
+                          ),
+                          Icon(
+                            Icons.arrow_forward_ios_rounded,
+                            size: ResSize.h * 14,
+                            color: AppColor.black,
                           ),
                         ],
                       ),
@@ -92,66 +95,84 @@ class DriverSideMenu extends StatelessWidget {
                         child: Column(
                           children: [
                             _buildMenuItem(
-                              icon: AppAssets.earnings,
+                              icon: AppAssets.rideHistory,
                               iconScaleSize: 1.3,
-                              title: "Earnings",
+                              title: "History",
                               onTap: () {
                                 Navigator.push(
                                   context,
-                                  RightToLeftTransition(EarningStatsScreen()),
+                                  RightToLeftTransition(DriverRideHistory()),
                                 );
                               },
                             ),
                             _buildMenuItem(
-                              icon: AppAssets.trip,
-                              title: "Trips history",
+                              icon: AppAssets.preference,
+                              title: "Preference",
                               onTap: () {
                                 Navigator.push(
                                   context,
-                                  RightToLeftTransition(
-                                    TripsScreen(showBackIcon: true),
-                                  ),
-                                );
-                              },
-                            ),
-                            _buildMenuItem(
-                              icon: AppAssets.documents,
-                              title: "Documents",
-                              onTap: () {
-                                Navigator.push(
-                                  context,
-                                  RightToLeftTransition(DriverDocuments()),
-                                );
-                              },
-                            ),
-                            _buildMenuItem(
-                              icon: AppAssets.helpSupportIcon,
-                              title: "Help & Support",
-                              onTap: () {
-                                Navigator.push(
-                                  context,
-                                  RightToLeftTransition(HelpAndSupportScreen()),
-                                );
-                              },
-                            ),
-                            _buildMenuItem(
-                              icon: AppAssets.settings,
-                              title: "Settings",
-                              onTap: () {
-                                Navigator.push(
-                                  context,
-                                  RightToLeftTransition(DriverSettingsScreen()),
+                                  RightToLeftTransition(Preferences()),
                                 );
                               },
                             ),
                           ],
                         ),
                       ),
+                      // 5.height,
+                      // // Call to Action Section
+                      // Container(
+                      //   padding: EdgeInsets.only(
+                      //     left: ResSize.w * 35,
+                      //     top: ResSize.h * 14,
+                      //     bottom: ResSize.h * 14,
+                      //   ),
+                      //   decoration: BoxDecoration(
+                      //     // ignore: deprecated_member_use
+                      //     color: const Color(0xFF215277).withOpacity(0.12),
+                      //   ),
+                      //   child: Row(
+                      //     children: [
+                      //       Image.asset(
+                      //         AppAssets.driverIcon,
+                      //         height: 24 * ResSize.h,
+                      //       ),
+                      //       13.width,
+                      //       TextWidget(
+                      //         text: "Become a driver",
+                      //         color: Color(0xff215277),
+                      //         fontSize: 16,
+                      //         fontWeight: fwNormal,
+                      //       ),
+                      //     ],
+                      //   ),
+                      // ),
                     ],
                   ),
                 ),
               ),
 
+              // Footer
+              // Container(
+              //   height: ResSize.h * 4,
+              //   width: double.infinity,
+              //   color: Color(0xffFAFAFA),
+              // ),
+              // 20.height,
+              // Row(
+              //   mainAxisAlignment: MainAxisAlignment.center,
+              //   children: [
+              //     Image.asset(AppAssets.logo, height: ResSize.h * 22),
+              //     7.width,
+              //     TextWidget(
+              //       text: "Powered by",
+              //       color: AppColor.black,
+              //       fontSize: 12,
+              //       fontWeight: fwMedium,
+              //     ),
+              //     7.width,
+              //     Image.asset(AppAssets.skypulse, height: ResSize.h * 22),
+              //   ],
+              // ),
               20.height,
             ],
           ),
@@ -164,7 +185,7 @@ class DriverSideMenu extends StatelessWidget {
     required String icon,
     required String title,
     required VoidCallback onTap,
-    double iconScaleSize = 1.2,
+    double iconScaleSize = 1,
   }) {
     return InkWell(
       onTap: onTap,
@@ -177,13 +198,13 @@ class DriverSideMenu extends StatelessWidget {
               child: Image.asset(
                 icon,
                 height: ResSize.h * 20,
-                color: Color(0xff6B6B6B),
+                color: AppColor.black,
               ),
             ),
             16.width,
             TextWidget(
               text: title,
-              color: Color(0xff6B6B6B),
+              color: AppColor.black,
               fontSize: 16,
               fontWeight: fwMedium,
             ),

@@ -1,290 +1,207 @@
 // ignore_for_file: deprecated_member_use
-
 import 'package:flutter/material.dart';
-import 'package:riding_app/constants/appcolors.dart';
-import 'package:riding_app/constants/appfontweight.dart';
-import 'package:riding_app/widgets/custom_text_widget.dart';
-import 'package:riding_app/widgets/responsive_size.dart';
-import 'package:riding_app/widgets/sizedbox_extention.dart';
+import 'package:movera/constants/appassets.dart';
+import 'package:movera/constants/appcolors.dart';
+import 'package:movera/constants/appfontweight.dart';
+import 'package:movera/models/title_image.dart';
+import 'package:movera/presentation/driver/pin%20verification/pin_verification.dart';
+import 'package:movera/presentation/driver/settings/accessibility/accessibility.dart';
+import 'package:movera/presentation/driver/settings/sound%20&%20voice/sound_voice.dart';
+import 'package:movera/widgets/custom_text_widget.dart';
+import 'package:movera/widgets/navigation_transition.dart';
+import 'package:movera/widgets/responsive_size.dart';
+import 'package:movera/widgets/sizedbox_extention.dart';
 import 'package:riff_switch/riff_switch.dart';
 
-class DriverSettingsScreen extends StatefulWidget {
-  const DriverSettingsScreen({super.key});
+class Settings extends StatefulWidget {
+  const Settings({super.key});
 
   @override
-  State<DriverSettingsScreen> createState() => _DriverSettingsScreenState();
+  State<Settings> createState() => _SettingsState();
 }
 
-class _DriverSettingsScreenState extends State<DriverSettingsScreen> {
-  bool isAutoAcceptEnabled = false;
-  bool val1 = false;
+class _SettingsState extends State<Settings> {
+  List<TitleImageModel> items = [
+    TitleImageModel(image: AppAssets.sound, title: "Sound & Voice"),
+    TitleImageModel(image: AppAssets.darkMode, title: "Dark mode"),
+    TitleImageModel(image: AppAssets.language, title: "Language"),
+    TitleImageModel(image: AppAssets.access, title: "Accessibility"),
+    TitleImageModel(image: AppAssets.pin, title: "Pin Verification"),
+    TitleImageModel(
+      image: AppAssets.emergencyCall,
+      title: "Emergency Contacts",
+    ),
+    TitleImageModel(image: AppAssets.safety, title: "Safety "),
+  ];
+  bool val = false;
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: AppColor.secondary,
+      backgroundColor: Colors.white,
+      appBar: AppBar(
+        actionsPadding: EdgeInsets.all(0),
+        automaticallyImplyLeading: false,
+        backgroundColor: AppColor.white,
+        clipBehavior: Clip.none,
+        foregroundColor: AppColor.white,
+        surfaceTintColor: Colors.transparent,
+        elevation: 0,
+        leading: IconButton(
+          onPressed: () {
+            Navigator.pop(context);
+          },
+          icon: Icon(
+            Icons.arrow_back_ios_rounded,
+            color: AppColor.title,
+            size: ResSize.h * 18,
+          ),
+        ),
+        centerTitle: true,
+        title: TextWidget(
+          text: "App setting",
+          color: AppColor.title,
+          fontSize: 16,
+          fontWeight: fwMedium,
+        ),
+      ),
       body: SingleChildScrollView(
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            50.height,
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                IconButton(
-                  onPressed: () {
-                    Navigator.pop(context);
-                  },
-                  icon: Icon(
-                    Icons.arrow_back_rounded,
-                    size: ResSize.h * 20,
-                    color: AppColor.primary,
-                  ),
-                ),
-                TextWidget(
-                  text: "Settings",
-                  color: AppColor.primary,
-                  fontSize: 18,
-                  fontWeight: fwSemiBold,
-                ),
-                IconButton(
-                  onPressed: () {},
-                  splashColor: Colors.transparent,
-                  highlightColor: Colors.transparent,
-                  icon: SizedBox(),
-                ),
-              ],
+            12.height,
+            Container(
+              height: ResSize.h * 8,
+              width: double.infinity,
+              color: Color(0xffFAFAFA),
             ),
-
-            32.height,
-
-            // Availability Section
-            Padding(
-              padding: EdgeInsets.symmetric(horizontal: screenHorizPadding),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  TextWidget(
-                    text: "Avaliablity",
-                    fontSize: 18,
-                    fontWeight: fwSemiBold,
-                    color: AppColor.primary,
-                  ),
-                  12.height,
-
-                  // Auto Accept Rides Card
-                  Container(
-                    padding: EdgeInsets.symmetric(
-                      horizontal: ResSize.w * 14,
-                      vertical: ResSize.h * 10,
-                    ),
-                    decoration: BoxDecoration(
-                      color: AppColor.secondary,
-                      borderRadius: BorderRadius.circular(12),
-                      boxShadow: [
-                        BoxShadow(
-                          offset: const Offset(0, 5),
-                          color: const Color(0xff000000).withOpacity(0.08),
-                          blurRadius: 20,
-                          spreadRadius: 0,
+            12.height,
+            ...List.generate(items.length, (index) {
+              return _menuItem(
+                icon: items[index].image,
+                title: items[index].title,
+                onTap: () {
+                  switch (index) {
+                    case 0:
+                      Navigator.push(
+                        context,
+                        RightToLeftTransition(SoundAndVoice()),
+                      );
+                      break;
+                    case 1:
+                      // Navigator.push(context, RightToLeftTransition(Analytics()));
+                      break;
+                    case 2:
+                      // Navigator.push(context, RightToLeftTransition(Analytics()));
+                      break;
+                    case 3:
+                      Navigator.push(
+                        context,
+                        RightToLeftTransition(Accessibility()),
+                      );
+                      break;
+                    case 4:
+                      Navigator.push(
+                        context,
+                        RightToLeftTransition(PinVerification()),
+                      );
+                      break;
+                    case 5:
+                      // Navigator.push(context, RightToLeftTransition(Analytics()));
+                      break;
+                    case 6:
+                    // Navigator.push(context, RightToLeftTransition(Analytics()));
+                    default:
+                  }
+                  // Navigator.push(context, RightToLeftTransition(Analytics()));
+                },
+                showArrow: items[index].image == AppAssets.darkMode
+                    ? false
+                    : true,
+                trailing: items[index].image == AppAssets.darkMode
+                    ? Transform.scale(
+                        scale: 0.8,
+                        child: RiffSwitch(
+                          trackColor: WidgetStatePropertyAll(Color(0xffBEBEBE)),
+                          activeTrackColor: Color(0xff00C24D),
+                          value: val,
+                          onChanged: (value) => setState(() {
+                            val = value;
+                          }),
+                          type: RiffSwitchType.cupertino,
+                          inactiveThumbColor: Colors.white,
+                          inactiveTrackColor: Color(0xffBEBEBE),
+                          activeColor: Color(0xff00C24D),
                         ),
-                      ],
-                    ),
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        TextWidget(
-                          text: "Auto accept rides",
-                          fontSize: 16,
-                          fontWeight: fwMedium,
-                          color: AppColor.primary,
-                        ),
-                        Transform.scale(
-                          scale: 0.8,
-                          child: RiffSwitch(
-                            trackColor: WidgetStatePropertyAll(
-                              Color(0xffBEBEBE),
-                            ),
-                            activeTrackColor: Color(
-                              0xff0DC216,
-                            ).withOpacity(0.2),
-                            value: val1,
-                            onChanged: (value) => setState(() {
-                              val1 = value;
-                            }),
-                            type: RiffSwitchType.cupertino,
-                            inactiveThumbColor: Colors.white,
-                            inactiveTrackColor: Color(0xffBEBEBE),
-                            activeColor: Color(0xff0DC216),
-                          ),
-                        ),
-                      ],
-                    ),
-                  ),
+                      )
+                    : items[index].image == AppAssets.language
+                    ? TextWidget(
+                        text: "English (US) ",
+                        color: AppColor.title,
+                        fontSize: 14,
+                        fontWeight: fwMedium,
+                      )
+                    : SizedBox(),
+              );
+            }),
 
-                  24.height,
-
-                  // Preferences Section
-                  TextWidget(
-                    text: "Preferences",
-                    fontSize: 18,
-                    fontWeight: fwSemiBold,
-                    color: AppColor.primary,
-                  ),
-
-                  12.height,
-
-                  // Preferences Card
-                  Container(
-                    decoration: BoxDecoration(
-                      color: AppColor.secondary,
-                      borderRadius: BorderRadius.circular(12),
-                      boxShadow: [
-                        BoxShadow(
-                          offset: const Offset(0, 5),
-                          color: const Color(0xff000000).withOpacity(0.08),
-                          blurRadius: 20,
-                          spreadRadius: 0,
-                        ),
-                      ],
-                    ),
-                    child: Column(
-                      children: [
-                        // Preferred Area
-                        _buildPreferenceItem(
-                          title: "Preferred area",
-                          onTap: () {
-                            // Handle tap
-                          },
-                          showDivider: true,
-                        ),
-
-                        // Language
-                        _buildPreferenceItem(
-                          title: "Language",
-                          trailing: Row(
-                            mainAxisSize: MainAxisSize.min,
-                            children: [
-                              TextWidget(
-                                text: "English (US)",
-                                fontSize: 14,
-                                fontWeight: fwNormal,
-                                color: AppColor.subtitle,
-                              ),
-                              8.width,
-                              Icon(
-                                Icons.chevron_right,
-                                color: AppColor.subtitle,
-                                size: ResSize.h * 24,
-                              ),
-                            ],
-                          ),
-                          onTap: () {
-                            // Handle tap
-                          },
-                          showDivider: false,
-                        ),
-                      ],
-                    ),
-                  ),
-
-                  24.height,
-
-                  // Logout Card
-                  GestureDetector(
-                    onTap: () {
-                      // Handle logout
-                    },
-                    child: Container(
-                      padding: EdgeInsets.symmetric(
-                        horizontal: ResSize.w * 14,
-                        vertical: ResSize.h * 16,
-                      ),
-                      decoration: BoxDecoration(
-                        color: AppColor.secondary,
-                        borderRadius: BorderRadius.circular(12),
-                        boxShadow: [
-                          BoxShadow(
-                            offset: const Offset(0, 5),
-                            color: const Color(0xff000000).withOpacity(0.08),
-                            blurRadius: 20,
-                            spreadRadius: 0,
-                          ),
-                        ],
-                      ),
-                      child: Row(
-                        children: [
-                          Icon(
-                            Icons.logout,
-                            color: AppColor.red,
-                            size: ResSize.h * 24,
-                          ),
-                          16.width,
-                          TextWidget(
-                            text: "Logout",
-                            fontSize: 16,
-                            fontWeight: fwMedium,
-                            color: AppColor.red,
-                          ),
-                        ],
-                      ),
-                    ),
-                  ),
-                ],
-              ),
-            ),
-
-            40.height,
+            24.height,
           ],
         ),
       ),
     );
   }
 
-  Widget _buildPreferenceItem({
+  Widget _menuItem({
+    required String icon,
     required String title,
-    Widget? trailing,
     required VoidCallback onTap,
-    required bool showDivider,
+    double iconScaleSize = 1,
+    bool showArrow = true,
+    Widget trailing = const SizedBox(),
   }) {
-    return Column(
-      children: [
-        GestureDetector(
-          onTap: onTap,
-          child: Container(
-            padding: EdgeInsets.symmetric(
-              horizontal: ResSize.w * 14,
-              vertical: ResSize.h * 16,
+    return InkWell(
+      onTap: onTap,
+      splashColor: AppColor.primary.withOpacity(0.1),
+      highlightColor: AppColor.primary.withOpacity(0.1),
+      child: Container(
+        padding: EdgeInsets.symmetric(
+          vertical: 14 * ResSize.h,
+          horizontal: screenHorizPadding,
+        ),
+        child: Row(
+          children: [
+            Transform.scale(
+              scale: iconScaleSize,
+              child: Image.asset(
+                icon,
+                height: ResSize.h * 20,
+                color: AppColor.title,
+              ),
             ),
-            color: Colors.transparent,
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            16.width,
+            Expanded(
+              child: TextWidget(
+                text: title,
+                color: AppColor.title,
+                fontSize: 18,
+                fontWeight: fwMedium,
+              ),
+            ),
+            Row(
               children: [
-                TextWidget(
-                  text: title,
-                  fontSize: 16,
-                  fontWeight: fwMedium,
-                  color: AppColor.primary,
-                ),
-                trailing ??
-                    Icon(
-                      Icons.chevron_right,
-                      color: AppColor.subtitle,
-                      size: ResSize.h * 24,
-                    ),
+                trailing,
+                showArrow
+                    ? Icon(
+                        Icons.arrow_forward_ios_rounded,
+                        color: AppColor.subtitle,
+                        size: ResSize.h * 18,
+                      )
+                    : SizedBox(),
               ],
             ),
-          ),
+          ],
         ),
-        if (showDivider)
-          Padding(
-            padding: EdgeInsets.symmetric(horizontal: ResSize.w * 14),
-            child: Divider(
-              color: const Color(0xFFE0E0E0),
-              thickness: 1,
-              height: 1,
-            ),
-          ),
-      ],
+      ),
     );
   }
 }
